@@ -1,14 +1,16 @@
 import React from 'react';
-import './App.css';
 import Navbar from '../components/Navbar/Navbar';
-import { RoutesElement } from '../routes';
-import { Footer } from '../components/Footer.tsx/Footer';
+import { Content } from '../routes';
+import { Footer } from '../components/Footer/Footer';
+import styles from './App.module.css';
 
 function App() {
   return (
-    <div className="App">
+    <div className={styles.app}>
       <Navbar />
-      <RoutesElement />
+      <main className={styles.main_container}>
+        <Content />
+      </main>
       <Footer />
     </div>
   );

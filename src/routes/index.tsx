@@ -1,13 +1,13 @@
 import React from 'react';
-import { Route, Routes, BrowserRouter } from 'react-router-dom';
+import { Route, Routes} from 'react-router-dom';
 import { Profile } from '../pages/Profile/Profile';
+import Tournaments from '../pages/Tournaments/Tournaments';
 
-export function RoutesElement() {
+export function Content() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Profile />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Profile />} />
+      <Route path="/tournaments" element={<Tournaments />} />
+    </Routes>
   )
 }

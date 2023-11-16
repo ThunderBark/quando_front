@@ -1,10 +1,16 @@
 import React from 'react';
+import styles from './Navbar.module.css';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   return (
-    <nav>
-      <div>Test1</div>
-      <div>Test2</div>
+    <nav className={styles.container}>
+      <div className={styles.label}>
+        <Link to='/'>Profile</Link>
+      </div>
+      <div className={styles.label}>
+        <Link to='/tournaments'>Tournaments</Link>
+      </div>
     </nav>
   );
 };
