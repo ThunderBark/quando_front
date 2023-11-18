@@ -8,9 +8,9 @@ function Navbar() {
       <div className={styles.button}>
         <Link to='/'>ОБО МНЕ</Link>
       </div>
-      <div className={styles.button}>
+      {/* <div className={styles.button}>
         <Link to='/tournaments'>ТУРИКИ</Link>
-      </div>
+      </div> */}
     </nav>
   );
 };

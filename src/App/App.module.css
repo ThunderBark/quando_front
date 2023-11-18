@@ -9,5 +9,5 @@
 .main_container {
   flex: auto;
 
-  min-width: 80vw;
+  width: 60vw;
 }

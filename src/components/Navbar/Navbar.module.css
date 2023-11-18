@@ -19,6 +19,7 @@
 }
 
 .button a {
+  font-size: larger;
   font-weight: bolder;
   text-decoration: none;
   cursor: pointer;

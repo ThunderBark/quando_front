@@ -5,10 +5,7 @@ export function Footer() {
   return (
     <footer className={styles.container}>
       <div>
-        Создано
-        <a rel='noreferrer' target='_blank' href='https://github.com/ThunderBark'>
-          мной
-        </a>
+        Создано <a rel='noreferrer' target='_blank' href='https://github.com/ThunderBark'>мной</a>
       </div>
     </footer>
   )

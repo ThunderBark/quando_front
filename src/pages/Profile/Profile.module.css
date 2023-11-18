@@ -8,20 +8,30 @@
 }
 
 .container h1 {
-  margin-bottom: 10px;
+  margin: 10px;
   font-weight: bold;
   font-size: xx-large;
 }
 
 .container p {
-  font-size: large;
-  margin: 10px 0;
+  font-size: larger;
+  margin: 10px;
+  text-wrap: wrap;
+}
+
+.container a {
+  color: inherit;
 }
 
 .avatar {
   width: 200px;
   border-radius: 50%;
   margin-top: 10px;
+}
+
+.description {
+  width: 100%;
+  text-align: center;
 }
 
 .socials {
@@ -32,4 +42,54 @@
 
 .social_item {
   margin: 10px 5px;
+}
+
+.project_container {
+  width: 100%;
+  height: fit-content;
+}
+
+.text {
+  width: 100%;
+  padding: 0 15px;
+}
+
+.preview {
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.video {
+  width: 100%;
+}
+
+@media screen and (min-width: 1000px) {
+  .description {
+    width: 50%;
+  }
+
+  .project_container {
+    width: 100%;
+  }
+  
+  .text {
+    display: inline-block;
+    vertical-align: top;
+    width: 50%;
+  }
+
+  .text p {
+    text-align: justify;
+    width: 100%;
+  }
+  
+  .preview {
+    display: inline-block;
+    width: 50%;
+  }
+  
+  .video {
+    display: inline-block;
+    width: 50%;
+  }
 }
