@@ -1,6 +1,9 @@
 :root {
   --tint: #FCA311;
   --neutral0: #000000;
+  --neutral25: #404040;
+  --neutral50: #7f7f7f;
+  --neutral75: #bfbfbf;
   --neutral100: #FFFFFF;
   --separator: #14213D;
   --background: #E5E5E5;
@@ -14,7 +17,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background-color: var(--background);
+  background-color: var(--neutral100);
 }
 
 code {

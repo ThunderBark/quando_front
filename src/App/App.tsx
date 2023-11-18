@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar/Navbar';
 import { Content } from '../routes';
 import { Footer } from '../components/Footer/Footer';
 import styles from './App.module.css';
+import 'minireset.css';
 
 function App() {
   return (
