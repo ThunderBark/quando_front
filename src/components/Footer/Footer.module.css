@@ -3,7 +3,6 @@
   color: var(--neutral50);
   background-color: var(--neutral0);
   padding: 1vh;
-  margin-top: 10px;
   
   display: flex;
   flex-direction: row;

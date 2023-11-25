@@ -1,4 +1,5 @@
 :root {
+
   --tint: #FCA311;
   --neutral0: #000000;
   --neutral25: #404040;
@@ -7,6 +8,18 @@
   --neutral100: #FFFFFF;
   --separator: #14213D;
   --background: #E5E5E5;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
 }
 
 body {
@@ -19,6 +32,9 @@ body {
 
   background-color: var(--neutral100);
   overflow-y: scroll;
+  height: 100%;
+  width: 100%;
+  margin: 0;
 }
 
 code {
