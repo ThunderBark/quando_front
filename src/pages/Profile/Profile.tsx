@@ -5,37 +5,42 @@ import { SocialIcon } from 'react-social-icons';
 export function Profile() {
   return (
     <main className={styles.container}>
-      <img className={styles.avatar + ' ' + styles.center} src="./avatar.jpeg" alt='Аватар'></img>
-      <h1 className={styles.center}>ThunderBark</h1>
-      <p className={styles.center + ' ' + styles.description}>
-        Программирую, ковыряю игры мб еще и стримлю. По кнопкам снизу можно посмотреть 
-        все социалочки и еще ниже представлены мои проекты.
-      </p>
-      <div className={styles.socials}>
-        <SocialIcon 
-          url="https://www.youtube.com/channel/UC_U3_3kTMBkJCEylYyWwKjQ?sub_confirmation=1"
-          className={styles.social_item}
-          target='_blank'
-        />
-        <SocialIcon
-          url="https://github.com/ThunderBark"
-          className={styles.social_item}
-          target='_blank'
-        />
-        <SocialIcon
-          url="https://www.twitch.tv/thunderbark"
-          className={styles.social_item}
-          target='_blank'
-        />
-        <SocialIcon
-          url="https://thunderbark.itch.io/"
-          className={styles.social_item}
-          target='_blank'
-        />
+      <div className={styles.about_container}>
+        <img className={styles.avatar} src="./avatar.jpeg" alt='Аватар'></img>
+        <div className={styles.description_container}>
+          <h1>ThunderBark</h1>
+          <p className={styles.description}>
+            Программирую, ковыряю игры мб еще и стримлю. По кнопкам снизу можно посмотреть 
+            все социалочки и еще ниже представлены мои проекты.
+          </p>
+          <div className={styles.socials}>
+            <SocialIcon 
+              url="https://www.youtube.com/channel/UC_U3_3kTMBkJCEylYyWwKjQ?sub_confirmation=1"
+              className={styles.social_item}
+              target='_blank'
+            />
+            <SocialIcon
+              url="https://github.com/ThunderBark"
+              className={styles.social_item}
+              target='_blank'
+            />
+            <SocialIcon
+              url="https://www.twitch.tv/thunderbark"
+              className={styles.social_item}
+              target='_blank'
+            />
+            <SocialIcon
+              url="https://thunderbark.itch.io/"
+              className={styles.social_item}
+              target='_blank'
+            />
+          </div>
+        </div>
       </div>
+      
       <hr/>
 
-      <h1 className={styles.center}>
+      <h1 className={styles.header}>
         <a rel='noreferrer' target='_blank' href='https://thunderbark.itch.io/space-seekers'>
           SPACE SEEKERS
         </a>
@@ -65,7 +70,7 @@ export function Profile() {
         </video>
       </article>
 
-      <h1 className={styles.center}>
+      <h1 className={styles.header}>
         <a rel='noreferrer' target='_blank' href='https://thunderbark.github.io/good-nasa-apod/'>
           GOOD NASA APOD
         </a>

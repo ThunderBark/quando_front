@@ -1,9 +1,22 @@
-.center {
+.header {
   align-self: center;
+  color: var(--neutral100);
+  background-color: var(--neutral0);
+  background-size: 100%;
+  border-radius: 5px;
+  padding: 5px;
+  margin-top: 50px;
+  margin-bottom: 15px;
+
+  transition: 0.1s;
+}
+
+.header:hover {
+  background-color: var(--neutral50);
 }
 
 .container {
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(30px);
   height: 100%;
   margin: 10px;
   padding: 10px;
@@ -16,7 +29,6 @@
 }
 
 .container h1 {
-  margin: 10px;
   font-weight: bold;
   font-size: xx-large;
 }
@@ -28,13 +40,28 @@
 }
 
 .container a {
-  color: inherit;
+  color: inherit; 
+}
+
+.about_container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.description_container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .avatar {
   width: 200px;
   border-radius: 50%;
-  margin-top: 10px;
 }
 
 .description {
@@ -69,6 +96,7 @@
 
 .text p {
   margin: 10px;
+  text-align: justify;
 }
 
 .preview {
@@ -81,8 +109,29 @@
 }
 
 @media screen and (min-width: 1000px) {
+  .container {
+    margin: 20px;
+    padding: 30px;
+  }
+
+  .about_container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+  }
+
+  .avatar {
+    width: 100%;
+    padding: 20px;
+    border-radius: 50%;
+  }
+
+  .description_container {
+    align-items: start;
+  }
+
   .description {
-    width: 50%;
+    width: 100%;
+    text-align: start;
   }
 
   .project_container {
