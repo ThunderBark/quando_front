@@ -33,15 +33,11 @@ const onRouteChange = (button: HTMLButtonElement | null, id: string | null) => {
 type RouteButtonProps = {
   text: string,
   route: string,
-  onClick: (e: React.MouseEvent) => void
 };
 
 function RouteButton(props: RouteButtonProps) {
   const location = useLocation();
   const navigate = useNavigate();
-
-  
-  console.log(location.pathname + ' ' + props.route + ' ' + (location.pathname === props.route))
 
   return (
     <button
@@ -63,20 +59,15 @@ function RouteButton(props: RouteButtonProps) {
 
 function Navbar() {
   const location = useLocation();
+
   React.useEffect(() => {
     onRouteChange(null, location.pathname);
   });
 
   return (
     <nav className={styles.container + ' ' + styles.expanded}>
-      <RouteButton text='ОБО МНЕ' route='/' onClick={(e: React.MouseEvent) => {
-      }}/>
-      <RouteButton text='ТУРИКИ' route='/tournaments' onClick={(e: React.MouseEvent) => {
-      }}/>
-      <RouteButton text='TEST1' route='/TEST1' onClick={(e: React.MouseEvent) => {
-      }}/>
-      <RouteButton text='TEST2' route='/TEST2' onClick={(e: React.MouseEvent) => {
-      }}/>
+      <RouteButton text='ОБО МНЕ' route='/'/>
+      {/* <RouteButton text='ТУРИКИ' route='/tournaments'/> */}
     </nav>
   );
 };

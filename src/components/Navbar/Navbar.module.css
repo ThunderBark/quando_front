@@ -17,7 +17,7 @@
 
 .expanded {
   min-height: 100vh;
-  font-size: 20vh;
+  font-size: min(20vh, 15vw);
   pointer-events: none;
 }
 

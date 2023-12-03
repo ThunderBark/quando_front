@@ -8,7 +8,7 @@ export function Content() {
   return (
     <Routes>
       <Route path="/" element={<Profile />} />
-      <Route path="/tournaments" element={<Tournaments />} />
+      {/* <Route path="/tournaments" element={<Tournaments />} /> */}
       <Route path="*" element={<UnhandledPath />} />
     </Routes>
   )

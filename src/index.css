@@ -35,7 +35,9 @@ body {
   height: 100%;
   width: 100%;
   margin: 0;
+}
 
+.triangles {
   background-color: var(--neutral100);
   background-image: linear-gradient(
     45deg,
@@ -55,12 +57,12 @@ body {
   background-size: var(--cell-size) var(--cell-size);
 
   animation-duration: 50s;
-  animation-name: background;
+  animation-name: triangles_animation;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 }
 
-@keyframes background {
+@keyframes triangles_animation {
   from {
     background-position:
       0 0,
@@ -89,6 +91,26 @@ body {
     background-position:
       calc(var(--cell-size) * -3) calc(var(--cell-size) * -2),
       calc(var(--cell-size) * 1.5) calc(var(--cell-size) * 2.5);
+  }
+}
+
+.unhandled {
+  background-image: url('/public/icons8-thunder-96.png');
+  background-size: max(8vh, 8vw);
+
+  animation-duration: 7s;
+  animation-name: unhandled_animation;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes unhandled_animation {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: max(8vh, 8vw) max(8vh, 8vw);
   }
 }
 

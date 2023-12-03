@@ -3,6 +3,13 @@ import styles from './Profile.module.css';
 import { SocialIcon } from 'react-social-icons';
 
 export function Profile() {
+  React.useEffect(() => {
+    document.body.classList.add('triangles');
+    return () => {
+      document.body.classList.remove('triangles');
+    }
+  });
+
   return (
     <main className={styles.container}>
       <div className={styles.about_container}>
@@ -76,12 +83,12 @@ export function Profile() {
         </a>
       </h1>
       <article className={styles.project_container}>
-        <iframe
+        {/* <iframe
           className={styles.preview}
           id="inlineFrameExample"
           title="Inline Frame Example"
           src="https://thunderbark.github.io/good-nasa-apod/"
-        />
+        /> */}
         <div className={styles.text}>
           <p>
             Сайтик, в котором вы можете посмотреть картиночки и видосы,
