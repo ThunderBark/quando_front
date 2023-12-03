@@ -1,16 +1,47 @@
 .container {
-  width: 100%;
+  height: min-content;
+  min-height: 0vh;
+  min-width: 100%;
+  max-width: max-content;
+  overflow-x: hidden;
+
   color: var(--neutral100);
   background-color: var(--neutral0);
-  
+
+  transition: min-height 0.5s;
+
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
 }
 
+.expanded {
+  min-height: 100vh;
+  font-size: 20vh;
+  pointer-events: none;
+}
+
+.disable_scroll {
+  overflow: hidden;
+}
+
 .button {
+  transition: 0.5s;
+
+  align-self: flex-end;
   padding: 10px;
-  transition-duration: 200ms;
+
+  font-size: larger;
+  font-weight: bolder;
+
+  opacity: 100;
+  width: 100vw;
+  min-width: 0vw;
+  max-width: fit-content;
+
+  text-overflow: clip;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .button:hover {
@@ -18,10 +49,8 @@
   color: var(--neutral0);
 }
 
-.button a {
-  font-size: larger;
-  font-weight: bolder;
-  text-decoration: none;
-  cursor: pointer;
-  color: inherit;
+.inactive {
+  opacity: 0 !important;
+  width: 0vw;
+  padding: 0px;
 }
