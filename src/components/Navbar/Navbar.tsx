@@ -3,13 +3,14 @@ import styles from './Navbar.module.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 
-const onRouteChange = (button: HTMLButtonElement | null, id: string | null) => {
+// Функция для обработки лоадера при смене страницы
+const onRouteChange = (button: HTMLButtonElement | null) => {
   const list = document.getElementsByClassName(styles.button);
   for (var i = 0; i < list.length; i++) {
-    if ((list[i] === button) || (list[i].id === id && button === null)) {
+    if (list[i] === button) {
       list[i].classList.remove(styles.inactive);
     }
-    else if ((list[i] !== button) || (button === null)) {
+    else {
       list[i].classList.add(styles.inactive);
     }
   }
@@ -44,8 +45,7 @@ function RouteButton(props: RouteButtonProps) {
       id={props.route}
       className={styles.button + ' ' + ((location.pathname !== props.route) ? styles.inactive : '')}
       onClick={(e: React.MouseEvent) => {
-        onRouteChange(e.target as HTMLButtonElement, location.pathname);
-
+        onRouteChange(e.target as HTMLButtonElement);
         setTimeout(() => {
           navigate(props.route);
         }, 500);
@@ -61,7 +61,24 @@ function Navbar() {
   const location = useLocation();
 
   React.useEffect(() => {
-    onRouteChange(null, location.pathname);
+    // Пытаемся прокрутиться вверх, если пользователь не находится вверху
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    })
+
+    // Находим подходящую кнопку-заглавье для текущей страницы
+    const list = document.getElementsByClassName(styles.button);
+    var button: HTMLButtonElement | null = null;
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].id === location.pathname) {
+        button = list[i] as HTMLButtonElement;
+        break;
+      }
+    }
+
+    onRouteChange(button);
   });
 
   return (
