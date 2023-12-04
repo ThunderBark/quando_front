@@ -6,11 +6,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 // Функция для обработки лоадера при смене страницы
 const onPageChange = (button: HTMLButtonElement | null) => {
   // Пролистываем страницу вверх
-  window.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: "smooth",
-  })
+  setTimeout(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  });
 
   // Выключаем все элементы, кроме нажатого
   const list = document.getElementsByClassName(styles.button);
