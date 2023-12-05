@@ -4,7 +4,9 @@ import { SocialIcon } from 'react-social-icons';
 
 export function Profile() {
   React.useEffect(() => {
+    // При заходе на страницу добавляем треугольники на фон
     document.body.classList.add('triangles');
+    // При выходе со страницы убираем треугольники с фона
     return () => {
       document.body.classList.remove('triangles');
     }

@@ -95,7 +95,7 @@ body {
 }
 
 .unhandled {
-  background-image: url('/public/icons8-thunder-96.png');
+  background-image: url('/icons8-thunder-96.png');
   background-size: max(12vh, 8vw);
 
   animation-duration: 7s;
