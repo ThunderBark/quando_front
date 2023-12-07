@@ -58,6 +58,7 @@ export function Gallery(props: {
 
   // Выполняется один раз при маунте элемента
   React.useEffect(() => {
+    console.log(props.selectedDate)
     // Запрашиваем данные для текущей даты
     getApodForMonth(
       selectedMonth,
@@ -79,7 +80,7 @@ export function Gallery(props: {
         apod,
         new Date(apod.date)
       );
-    })
+    });
   }, []);
 
   // Функция для обновления просматриваемого месяца
@@ -116,7 +117,7 @@ export function Gallery(props: {
 
   // TODO: Блокировать селекторы во время загрузки
   // TODO: Блокировать галлерею во время загрузки
-  // FIXME: Не отображаются число на элементах галереи
+  // FIXME: Не отображается число на элементах галереи
   return (
     <div className={styles.gallery}>
       <div className={styles.selection}>

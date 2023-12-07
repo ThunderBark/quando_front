@@ -2,6 +2,20 @@ import React from 'react';
 import styles from './Apod.module.css';
 import { Gallery } from './gallery/Gallery';
 import { ApodEntry } from './gallery/GalleryAPI';
+import { useNavigate, useParams } from 'react-router-dom';
+
+
+export function IsApodDateValid(date: string | undefined): (string | 'invalid') {
+  if (date === undefined) {
+    return 'invalid';
+  }
+
+  if (!date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    return 'invalid';
+  }
+
+  return date;
+}
 
 
 type ApodState = {
@@ -10,13 +24,14 @@ type ApodState = {
   selectedApod: ApodEntry | undefined,
 }
 
-export function Apod(props: { date: Date } = {
-  date: new Date(),
-}) {
-  const [status, setStatus] = React.useState<'idle' | 'loading'>('loading');
-  const [selectedDate, setSelectedDate] = React.useState(props.date);
-  const [selectedApod, setSelectedApod] = React.useState({} as ApodEntry);
 
+export function Apod() {
+  const params = useParams<{date: string}>();
+  const navigate = useNavigate();
+
+  const [status, setStatus] = React.useState<'idle' | 'loading'>('loading');
+  const [selectedDate, setSelectedDate] = React.useState(new Date(params.date!));
+  const [selectedApod, setSelectedApod] = React.useState({} as ApodEntry);
 
   // TODO: Починить стили страницы, как-то
   // TODO: Выставлять раут в соответствии с выбранной датой
@@ -25,6 +40,8 @@ export function Apod(props: { date: Date } = {
   const changeApod = React.useCallback((apod: ApodEntry, date: Date) => {
     setSelectedDate(date);
     setSelectedApod(apod);
+
+    navigate('/apod/' + date.toISOString().substring(0, 10));
   }, [])
 
   // TODO: Добавить лоадер

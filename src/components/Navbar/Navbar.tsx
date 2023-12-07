@@ -72,14 +72,14 @@ function PageButton(props: PageButtonProps) {
 
 
 function Navbar() {
-  const location = useLocation();
 
   React.useEffect(() => {
+    const curPage = ('/' + location.pathname.split('/')[1]);
     // Находим подходящую кнопку-заглавье для текущей страницы
-    const list = document.getElementsByClassName(styles.button);
     var button: HTMLButtonElement | null = null;
+    const list = document.getElementsByClassName(styles.button);
     for (var i = 0; i < list.length; i++) {
-      if (list[i].id === location.pathname) {
+      if (list[i].id === curPage) {
         button = list[i] as HTMLButtonElement;
         break;
       }
