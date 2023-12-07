@@ -92,6 +92,7 @@ function Navbar() {
   return (
     <nav className={styles.container + ' ' + styles.expanded}>
       <PageButton text='ОБО МНЕ' route='/'/>
+      <PageButton text='APOD' route='/apod'/>
       {/* <RouteButton text='ТУРИКИ' route='/tournaments'/> */}
     </nav>
   );

@@ -16,6 +16,7 @@
 }
 
 .container {
+  width: 95vw;
   backdrop-filter: blur(30px);
   height: min-content;
   margin: 10px;
@@ -110,8 +111,9 @@
 
 @media screen and (min-width: 1000px) {
   .container {
-    margin: 20px;
+    margin: 20px auto;
     padding: 30px;
+    width: min(70vw, 1200px);
   }
 
   .about_container {
