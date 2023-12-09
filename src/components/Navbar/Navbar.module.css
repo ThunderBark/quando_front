@@ -1,8 +1,10 @@
 .container {
   height: min-content;
   min-height: 0vh;
+
   min-width: 100%;
   max-width: max-content;
+
   overflow-x: hidden;
 
   color: var(--neutral100);

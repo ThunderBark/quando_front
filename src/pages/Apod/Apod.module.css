@@ -13,6 +13,12 @@
   opacity: 0;
 }
 
+.descrLink {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
 .description {
   position: absolute;
   left: 0;
@@ -36,12 +42,18 @@
 }
 
 .image {
+  flex-grow: 1;
+  flex-basis: 0;
+
   cursor: pointer;
+  
+  height: 100%;
   width: 100%;
   max-width: 100%;
-  height: 100%;
+  max-height: 100%;
+
   object-fit: contain;
-  width: auto;
+
   margin: 0;
 }
 
@@ -50,18 +62,30 @@
 }
 
 .imgWrapper {
-  width: fit-content;
+  width: 100%;
   height: 100%;
+  
   margin: 0 auto;
   position: relative;
   text-align: center;
+
+  align-self: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .wrapper {
+  flex-grow: 1;
+  flex-basis: 0;
+
   width: 100%;
   height: 100%;
+
   display: grid;
   grid-template-columns: 3fr 1fr;
+
   overflow: hidden;
 
   background-color: var(--neutral50);
@@ -79,6 +103,7 @@
 
 @media screen and (max-width: 800px) {
   .wrapper {
+    flex-basis: unset;
     text-align: center;
     display: block;
   }
@@ -93,6 +118,7 @@
   }
 
   .descrLink {
+    position: static;
     pointer-events: none;
     text-decoration: none;
   }
@@ -105,6 +131,10 @@
   .imgWrapper {
     position: static;
     height: fit-content;
+  }
+
+  .image {
+    flex-basis: unset;
   }
 
   .content:hover {

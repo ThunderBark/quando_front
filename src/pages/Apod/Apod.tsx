@@ -34,10 +34,13 @@ export function Apod() {
   const [selectedApod, setSelectedApod] = React.useState({} as ApodEntry);
 
   // TODO: Починить стили страницы, как-то
-  // TODO: Выставлять раут в соответствии с выбранной датой
 
   // Колбэк для галереи для изменения текущего отображаемого APOD
   const changeApod = React.useCallback((apod: ApodEntry, date: Date) => {
+    if (!apod.copyright) {
+      apod.copyright = 'NASA';
+    }
+    
     setSelectedDate(date);
     setSelectedApod(apod);
 
@@ -49,28 +52,28 @@ export function Apod() {
     <div className={styles.wrapper}>
       {selectedApod?.media_type === "image" && (
         <div className={styles.imgWrapper}>
-            <img
-              className={styles.image}
-              src={selectedApod.url}
-              alt={selectedApod.title}
-              onClick={() => {window.open(selectedApod?.hdurl)}}
-            />
-            <a
-              className={styles.descrLink}
-              href={selectedApod.hdurl}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <div className={styles.content}>
-                <div className={styles.title}>
-                  <h2>{selectedApod.title}</h2>
-                  <p>By {selectedApod.copyright}, {selectedApod.date}</p>
-                </div>
-                <div className={styles.description}>
-                  {selectedApod.explanation}
-                </div>
+          <img
+            className={styles.image}
+            src={selectedApod.url}
+            alt={selectedApod.title}
+            onClick={() => {window.open(selectedApod.hdurl)}}
+          />
+          <a
+            className={styles.descrLink}
+            href={selectedApod.hdurl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <div className={styles.content}>
+              <div className={styles.title}>
+                <h2>{selectedApod.title}</h2>
+                <p>By {selectedApod.copyright}, {selectedApod.date}</p>
               </div>
-            </a>
+              <div className={styles.description}>
+                {selectedApod.explanation}
+              </div>
+            </div>
+          </a>
         </div>
       )}
       {selectedApod?.media_type === "video" && (

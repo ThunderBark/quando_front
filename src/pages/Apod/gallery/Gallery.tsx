@@ -58,7 +58,6 @@ export function Gallery(props: {
 
   // Выполняется один раз при маунте элемента
   React.useEffect(() => {
-    console.log(props.selectedDate)
     // Запрашиваем данные для текущей даты
     getApodForMonth(
       selectedMonth,
@@ -101,7 +100,7 @@ export function Gallery(props: {
   // Функция для обновления просматриваемого года
   const setYear = (year: number) => {
     setSelectedYear(year);
-    setSelectedMonth(ClampMonthByYear(year, selectedMonth))
+    setSelectedMonth(ClampMonthByYear(year, selectedMonth));
     setMonths(GetAvailableMonthsByYear(year));
 
     // Запрашиваем данные для текущей даты
@@ -117,7 +116,6 @@ export function Gallery(props: {
 
   // TODO: Блокировать селекторы во время загрузки
   // TODO: Блокировать галлерею во время загрузки
-  // FIXME: Не отображается число на элементах галереи
   return (
     <div className={styles.gallery}>
       <div className={styles.selection}>
@@ -167,12 +165,17 @@ export function Gallery(props: {
               src={item.media_type === 'image' ? item.url : item.thumbnail_url}
               alt={item.title}
             />
-            <div></div>
+            <div>
+              {item.date.substring(
+                item.date.charAt(item.date.length - 2) === "0" ? 9 : 8,
+                10
+              )}
+            </div>
             {item.media_type === "video" && (
               <img
                 className={styles.youtubeLogo}
-                src='youtube_logo.png'
-                alt="video logo"
+                src='/youtube_logo.png'
+                alt='video logo'
               ></img>
             )}
           </div>
