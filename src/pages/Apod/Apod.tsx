@@ -1,8 +1,9 @@
 import React from 'react';
 import styles from './Apod.module.css';
 import { Gallery } from './gallery/Gallery';
-import { ApodEntry } from './gallery/GalleryAPI';
-import { useNavigate, useParams } from 'react-router-dom';
+import { ApodEntry, ApodResponse } from './ApodAPI';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { getApodForMonth } from './ApodActions';
 
 
 export function IsApodDateValid(date: string | undefined): (string | 'invalid') {
@@ -14,39 +15,92 @@ export function IsApodDateValid(date: string | undefined): (string | 'invalid') 
     return 'invalid';
   }
 
+  if (isNaN(Date.parse(date))) {
+    return 'invalid';
+  }
+
+  const request = new Date(date).getTime();
+  const today = new Date().getTime();
+  const begin = new Date("1995-06-16").getTime();
+  if (request < begin || request > today) {
+    return 'invalid';
+  }
+
   return date;
-}
-
-
-type ApodState = {
-  status: "idle" | "loading",
-  selectedDate: Date,
-  selectedApod: ApodEntry | undefined,
 }
 
 
 export function Apod() {
   const params = useParams<{date: string}>();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [status, setStatus] = React.useState<'idle' | 'loading'>('loading');
-  const [selectedDate, setSelectedDate] = React.useState(new Date(params.date!));
+  // const [status, setStatus] = React.useState<'idle' | 'loading'>('loading');
+  const [apodArray, setApodArray] = React.useState(new Array<ApodEntry>());
+  const [selectedDate, setSelectedDate] = React.useState(new Date("1970-01-01"));
   const [selectedApod, setSelectedApod] = React.useState({} as ApodEntry);
 
-  // TODO: Починить стили страницы, как-то
+
+  React.useEffect(() => {
+    const newDate = new Date(params.date!);
+
+    // Если дата прошлого запроса данных входила в тот же месяц, значит данные у нас есть
+    if (
+      selectedDate.getFullYear() === newDate.getFullYear() &&
+      selectedDate.getMonth() === newDate.getMonth()
+    ) {
+      const apod = apodArray.find(
+        (item) => (new Date(item.date).toDateString() === newDate.toDateString())
+      ) || apodArray[apodArray.length - 1];
+
+      setSelectedApod(apod);
+      setSelectedDate(newDate);
+      return;
+    }
+
+    // Если дошли сюда, то данных нет - надо запрашивать
+    getApodForMonth(
+      newDate.getMonth(),
+      newDate.getFullYear(),
+    )
+    .then((value: ApodResponse) => {
+      // Пытаемся найти APOD за запрошенную дату
+      const apod = value.find(
+        (item) => (new Date(item.date).toDateString() === newDate.toDateString())
+      ) ||
+      // Или просто выдаем последний элемент
+      value[value.length - 1];
+
+      // Выставляем актуальную дату и сохраняем массив картинок
+      setApodArray(value);
+      setSelectedApod(apod);
+      setSelectedDate(newDate);
+    });
+  }, [location]);
 
   // Колбэк для галереи для изменения текущего отображаемого APOD
-  const changeApod = React.useCallback((apod: ApodEntry, date: Date) => {
-    if (!apod.copyright) {
-      apod.copyright = 'NASA';
-    }
-    
-    setSelectedDate(date);
-    setSelectedApod(apod);
-
+  const changeApod = React.useCallback((date: Date) => {
     navigate('/apod/' + date.toISOString().substring(0, 10));
-  }, [])
+  }, []);
 
+  const loadMonthYear = React.useCallback((month: number, year: number) => {
+    // Обновляем галерею
+    getApodForMonth(
+      month,
+      year,
+    )
+    .then((value: ApodResponse) => {
+      const newDate = new Date(selectedDate);
+      newDate.setMonth(month);
+      newDate.setFullYear(year);
+      setSelectedDate(newDate);
+
+      // Сохраняем массив картинок
+      setApodArray(value);
+    });
+  }, []);
+
+  // TODO: Починить стили страницы, как-то
   // TODO: Добавить лоадер
   return (
     <div className={styles.wrapper}>
@@ -101,7 +155,9 @@ export function Apod() {
 
       <Gallery
         selectedDate={selectedDate}
+        galleryArray={apodArray}
         onApodChange={changeApod}
+        onYearMonthChange={loadMonthYear}
       />
     </div>
   )

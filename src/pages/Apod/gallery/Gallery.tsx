@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './Gallery.module.css';
-import { ApodEntry, ApodResponse } from './GalleryAPI';
-import { getApodForMonth } from './GalleryActions';
+import { ApodEntry } from '../ApodAPI';
 
 
 // Функция, которая сдвигает значение месяца в допускаемое значение
@@ -43,75 +42,46 @@ const GetAvailableMonthsByYear = (year: number
 
 export function Gallery(props: {
   selectedDate: Date,
-  onApodChange: (apod: ApodEntry, date: Date) => void
+  galleryArray: Array<ApodEntry>
+  onApodChange: (date: Date) => void
+  onYearMonthChange: (month: number, year: number) => void
 }) {
 
   const [months, setMonths] = React.useState(
     GetAvailableMonthsByYear(props.selectedDate.getFullYear())
   );
-  const [years, setYears] = React.useState(
-    [...Array(new Date().getFullYear() - 1994).keys()].map((i) => ((i + 1995).toString()))
-  );
-  const [apodArray, setApodArray] = React.useState(new Array<ApodEntry>());
+  const years = [...Array(new Date().getFullYear() - 1994).keys()].map((i) => ((i + 1995).toString()));
   const [selectedYear, setSelectedYear] = React.useState(props.selectedDate.getFullYear());
   const [selectedMonth, setSelectedMonth] = React.useState(props.selectedDate.getMonth());
 
-  // Выполняется один раз при маунте элемента
   React.useEffect(() => {
-    // Запрашиваем данные для текущей даты
-    getApodForMonth(
-      selectedMonth,
-      selectedYear
-    )
-    .then((value: ApodResponse) => {
-      // Сохраняем все картинки себе в состояние
-      setApodArray(value);
+    const year = props.selectedDate.getFullYear();
+    const month = ClampMonthByYear(year, props.selectedDate.getMonth());
 
-      // Пытаемся найти APOD за запрошенную дату
-      const apod = value.find(
-        (item) => (new Date(item.date).toDateString() === props.selectedDate.toDateString())
-      ) ||
-      // Или просто выдаем последний элемент
-      value[value.length - 1];
-
-      // Передаем родителю Apod для отображения
-      props.onApodChange(
-        apod,
-        new Date(apod.date)
-      );
-    });
-  }, []);
+    setSelectedYear(year);
+    setSelectedMonth(month);
+    setMonths(GetAvailableMonthsByYear(year));
+  }, [props.selectedDate]);
 
   // Функция для обновления просматриваемого месяца
   const setMonth = (month: number) => {
-    setSelectedMonth(month);
+    // Передавать родителю новый месяц
+    props.onYearMonthChange(month, selectedYear)
 
-    // Запрашиваем данные для текущей даты
-    getApodForMonth(
-      month,
-      selectedYear
-    )
-    .then((response: ApodResponse) => {
-      // Сохраняем все картинки себе в состояние
-      setApodArray(response);
-    })
+    setSelectedMonth(month);
   }
   
   // Функция для обновления просматриваемого года
   const setYear = (year: number) => {
+    // Передавать родителю новый год
+    props.onYearMonthChange(
+      ClampMonthByYear(year, selectedMonth),
+      year
+    );
+
     setSelectedYear(year);
     setSelectedMonth(ClampMonthByYear(year, selectedMonth));
     setMonths(GetAvailableMonthsByYear(year));
-
-    // Запрашиваем данные для текущей даты
-    getApodForMonth(
-      ClampMonthByYear(year, selectedMonth),
-      year
-    )
-    .then((response: ApodResponse) => {
-      // Сохраняем все картинки себе в состояние
-      setApodArray(response);
-    })
   }
 
   // TODO: Блокировать селекторы во время загрузки
@@ -150,13 +120,13 @@ export function Gallery(props: {
       <hr className={styles.hr} />
 
       <div className={styles.grid}>
-        {apodArray.map((item, index) =>
+        {props.galleryArray.map((item, index) =>
           <div 
             className={styles.item}
             key={index}
             title={item.title}
             onClick={() => {
-              props.onApodChange(item, new Date(item.date));
+              props.onApodChange(new Date(item.date));
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           >

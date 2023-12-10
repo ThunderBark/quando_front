@@ -1,4 +1,4 @@
-import { ApodResponse, fetchDateRange } from "./GalleryAPI";
+import { ApodResponse, fetchDateRange } from "./ApodAPI";
 
 export async function getApodForMonth(month: number, year: number) {
   const today = new Date();
