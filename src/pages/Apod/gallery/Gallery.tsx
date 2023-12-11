@@ -90,6 +90,7 @@ export function Gallery(props: {
     <div className={styles.gallery}>
       <div className={styles.selection}>
         <select
+          className={styles.select}
           value={selectedMonth}
           onChange={(e) => {
             setMonth(parseInt(e.target.value));
@@ -103,6 +104,7 @@ export function Gallery(props: {
           )}
         </select>
         <select
+          className={styles.select}
           value={selectedYear}
           onChange={(e) => {
             setYear(parseInt(e.target.value));

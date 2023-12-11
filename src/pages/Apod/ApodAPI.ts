@@ -23,7 +23,7 @@ export async function fetchDateRange(
   return fetch(
     "https://api.nasa.gov/planetary/apod?" +
       new URLSearchParams([
-        ["api_key", "0BWf7mN5x2fbba52rkKFOOygYXgTiFZDW6ZzPELH"],
+        ["api_key", "DEMO_KEY"],
         ["start_date", firstDay.toString()],
         ["end_date", lastDay.toString()],
         ["thumbs", "true"],
