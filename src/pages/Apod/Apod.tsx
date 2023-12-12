@@ -2,11 +2,12 @@ import React from 'react';
 import styles from './Apod.module.css';
 import { Gallery } from './gallery/Gallery';
 import { ApodEntry, ApodResponse } from './ApodAPI';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { LoaderFunctionArgs, redirect, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { getApodForMonth } from './ApodActions';
+import routes from '../../routes';
 
 
-export function IsApodDateValid(date: string | undefined): (string | 'invalid') {
+function IsApodDateValid(date: string | undefined): (string | 'invalid') {
   if (date === undefined) {
     return 'invalid';
   }
@@ -27,6 +28,26 @@ export function IsApodDateValid(date: string | undefined): (string | 'invalid') 
   }
 
   return date;
+}
+
+
+const getBasePath = () => {
+  return routes.find((item) => item.title === 'APOD')?.basepath;
+}
+
+
+export const ApodLoader = (url: LoaderFunctionArgs<any>) => {
+  if (!url.params.hasOwnProperty('date') || url.params.date === undefined) {
+    return redirect(getBasePath() + new Date().toISOString().substring(0, 10)
+    );
+  }
+
+  const apodDateString = IsApodDateValid(url.params.date);
+  if (apodDateString === 'invalid') {
+    return redirect('/404');
+  }
+
+  return new Date(apodDateString);
 }
 
 
@@ -80,7 +101,7 @@ export function Apod() {
 
   // Колбэк для галереи для изменения текущего отображаемого APOD
   const changeApod = React.useCallback((date: Date) => {
-    navigate('/apod/' + date.toISOString().substring(0, 10));
+    navigate(getBasePath() + date.toISOString().substring(0, 10));
   }, []);
 
   const loadMonthYear = React.useCallback((month: number, year: number) => {

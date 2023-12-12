@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Navbar.module.css';
 import { useLocation, useNavigate } from 'react-router-dom';
+import routes from '../../routes';
 
 
 // Функция для обработки лоадера при смене страницы
@@ -45,12 +46,7 @@ const onPageChange = (button: HTMLButtonElement | null) => {
 }
 
 
-type PageButtonProps = {
-  text: string,
-  route: string,
-};
-
-function PageButton(props: PageButtonProps) {
+function PageButton(props: {text: string, route: string}) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -91,9 +87,13 @@ function Navbar() {
 
   return (
     <nav className={styles.container + ' ' + styles.expanded}>
-      <PageButton text='ОБО МНЕ' route='/'/>
-      <PageButton text='APOD' route='/apod'/>
-      {/* <RouteButton text='ТУРИКИ' route='/tournaments'/> */}
+      {routes.map(
+        (item) => <PageButton
+          text={item.title}
+          route={item.basepath}
+          key={item.basepath}
+        />
+      )}
     </nav>
   );
 };
