@@ -1,0 +1,55 @@
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+
+  position: fixed;
+
+  z-index: -1;
+
+  background-color: black;
+}
+
+.star {
+  display: block;
+  background-color: #fff;
+
+  aspect-ratio: 1;
+
+  position: fixed;
+  border-radius: 100%;
+
+  animation-timing-function: linear, ease;
+  animation-iteration-count: infinite;
+  animation-direction: normal, alternate;
+  animation-fill-mode: forwards;
+}
+
+@keyframes move_right {
+  from {
+    transform: rotate(0deg) translateX(8px) rotate(0deg);
+  }
+  
+  to {
+    transform: rotate(360deg) translateX(8px) rotate(-360deg);
+  }
+}
+
+@keyframes move_left {
+  from {
+    transform: rotate(0deg) translateX(8px) rotate(0deg);
+  }
+  
+  to {
+    transform: rotate(-360deg) translateX(8px) rotate(360deg);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 100%;
+  }
+
+  to {
+    opacity: 0%;
+  }
+}
