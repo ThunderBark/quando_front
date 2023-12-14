@@ -18,10 +18,7 @@
   position: fixed;
   border-radius: 100%;
 
-  animation-timing-function: linear, ease;
   animation-iteration-count: infinite;
-  animation-direction: normal, alternate;
-  animation-fill-mode: forwards;
 }
 
 @keyframes move_right {
@@ -50,6 +47,16 @@
   }
 
   to {
-    opacity: 0%;
+    opacity: 20%;
+  }
+}
+
+@keyframes move_up {
+  from {
+    top: 110%;
+  }
+
+  to {
+    top: -10%;
   }
 }

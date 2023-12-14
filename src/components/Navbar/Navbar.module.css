@@ -1,4 +1,6 @@
 .container {
+  align-self: flex-start;
+
   height: min-content;
   min-height: 0vh;
 
