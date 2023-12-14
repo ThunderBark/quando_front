@@ -5,7 +5,7 @@ import { ApodEntry, ApodResponse } from './ApodAPI';
 import { LoaderFunctionArgs, redirect, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { getApodForMonth } from './ApodActions';
 import routes from '../../routes';
-import { RotatingStars } from '../../components/RotatingStars/RotatingStars';
+import { StarsBackground } from '../../components/StarsBackground/StarsBackground';
 
 
 function IsApodDateValid(date: string | undefined): string | 'invalid' {
@@ -126,7 +126,7 @@ export function Apod() {
   // TODO: Добавить лоадер
   return (
     <div className={styles.wrapper}>
-      <RotatingStars/>
+      <StarsBackground/>
       {selectedApod?.media_type === "image" && (
         <div className={styles.imgWrapper}>
           <img
