@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Apod.module.css';
-import { Gallery } from './gallery/Gallery';
+import { Gallery } from './Gallery/Gallery';
 import { ApodEntry, ApodResponse } from './ApodAPI';
 import { LoaderFunctionArgs, redirect, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { getApodForMonth } from './ApodActions';
@@ -122,8 +122,9 @@ export function Apod() {
     });
   }, []);
 
+  // TODO: Как-то не раскрывать шторку если не загрузиласть страница
   // TODO: Навести красоту в стилях
-  // TODO: Добавить лоадер
+  // XXX?: Добавить лоадер
   return (
     <div className={styles.wrapper}>
       <StarsBackground/>
