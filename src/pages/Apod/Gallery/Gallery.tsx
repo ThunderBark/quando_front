@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Gallery.module.css';
 import { ApodEntry } from '../ApodAPI';
+import Loader from '../Loader/Loader';
 
 
 // Функция, которая сдвигает значение месяца в допускаемое значение
@@ -47,6 +48,7 @@ export function Gallery(props: {
   onYearMonthChange: (month: number, year: number) => void
 }) {
 
+  const [state, setState] = React.useState<'loading' | 'idle'>('loading');
   const [months, setMonths] = React.useState(
     GetAvailableMonthsByYear(props.selectedDate.getFullYear())
   );
@@ -63,16 +65,22 @@ export function Gallery(props: {
     setMonths(GetAvailableMonthsByYear(year));
   }, [props.selectedDate]);
 
+  React.useEffect(() => {
+    setState('idle');
+  }, [props.galleryArray]);
+
   // Функция для обновления просматриваемого месяца
   const setMonth = (month: number) => {
+    setState('loading');
     // Передавать родителю новый месяц
-    props.onYearMonthChange(month, selectedYear)
+    props.onYearMonthChange(month, selectedYear);
 
     setSelectedMonth(month);
   }
   
   // Функция для обновления просматриваемого года
   const setYear = (year: number) => {
+    setState('loading');
     // Передавать родителю новый год
     props.onYearMonthChange(
       ClampMonthByYear(year, selectedMonth),
@@ -84,8 +92,7 @@ export function Gallery(props: {
     setMonths(GetAvailableMonthsByYear(year));
   }
 
-  // TODO: Блокировать селекторы во время загрузки
-  // TODO: Блокировать галлерею во время загрузки
+
   return (
     <div className={styles.gallery}>
       <div className={styles.selection}>
@@ -95,6 +102,7 @@ export function Gallery(props: {
           onChange={(e) => {
             setMonth(parseInt(e.target.value));
           }}
+          disabled={state === 'loading'}
         >
           Month
           {months.map((item, index) => 
@@ -109,6 +117,7 @@ export function Gallery(props: {
           onChange={(e) => {
             setYear(parseInt(e.target.value));
           }}
+          disabled={state === 'loading'}
         >
           Year
           {years.map((item, index) =>
@@ -120,11 +129,13 @@ export function Gallery(props: {
       </div>
 
       <hr className={styles.hr} />
-
-      <div className={styles.grid}>
+      
+      {state === 'loading' && <Loader/>}
+      {state === 'idle' && <div className={styles.grid}>
         {props.galleryArray.map((item, index) =>
-          <div 
-            className={styles.item}
+          <div
+            id={item.date}
+            className={styles.item + ' ' + styles.inactive}
             key={index}
             title={item.title}
             onClick={() => {
@@ -136,6 +147,9 @@ export function Gallery(props: {
               className={styles.itemImg}
               src={item.media_type === 'image' ? item.url : item.thumbnail_url}
               alt={item.title}
+              onLoad={() => {
+                document.getElementById(item.date)!.classList.remove(styles.inactive)
+              }}
             />
             <div>
               {item.date.substring(
@@ -143,6 +157,7 @@ export function Gallery(props: {
                 10
               )}
             </div>
+
             {item.media_type === "video" && (
               <img
                 className={styles.youtubeLogo}
@@ -152,7 +167,7 @@ export function Gallery(props: {
             )}
           </div>
         )}
-      </div>
+      </div>}
     </div>
   )
 }
