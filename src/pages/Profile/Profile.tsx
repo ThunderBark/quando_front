@@ -1,13 +1,22 @@
 import React from 'react';
 import styles from './Profile.module.css';
 import { SocialIcon } from 'react-social-icons';
+import { useLoading } from '../../App/App';
 
 export function Profile() {
+  const loadingCtx = useLoading();
+  const [loadCnt, setLoadCnt] = React.useState(0);
+
   React.useEffect(() => {
+    const loadingTimeout = setTimeout(() => {
+      loadingCtx.setLoading(false);
+    }, 2000);
+
     // При заходе на страницу добавляем треугольники на фон
     document.body.classList.add('triangles');
     // При выходе со страницы убираем треугольники с фона
     return () => {
+      clearTimeout(loadingTimeout);
       document.body.classList.remove('triangles');
     }
   });
@@ -15,7 +24,13 @@ export function Profile() {
   return (
     <main className={styles.container}>
       <div className={styles.about_container}>
-        <img className={styles.avatar} src="./avatar.jpeg" alt='Аватар'></img>
+        <img
+          className={styles.avatar}
+          src='/avatar.jpeg'
+          alt='Аватар'
+          onLoad={() => {setLoadCnt(loadCnt - 1)}}
+          onLoadStart={() => {setLoadCnt(loadCnt + 1)}}
+        />
         <div className={styles.description_container}>
           <h1>ThunderBark</h1>
           <p className={styles.description}>
@@ -74,7 +89,7 @@ export function Profile() {
           </p>
         </div>
         <video controls className={styles.video}>
-          <source src="./space_seekers_gameplay.mp4" type="video/mp4" />
+          <source src="/space_seekers_gameplay.mp4" type="video/mp4" />
           Sorry, your browser doesn't support videos.
         </video>
       </article>

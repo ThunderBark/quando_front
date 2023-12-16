@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styles from './Apod.module.css';
 import { Gallery } from './Gallery/Gallery';
 import { ApodEntry, ApodResponse } from './ApodAPI';
@@ -6,6 +6,7 @@ import { LoaderFunctionArgs, redirect, useLocation, useNavigate, useParams } fro
 import { getApodForMonth } from './ApodActions';
 import routes from '../../routes';
 import { StarsBackground } from '../../components/StarsBackground/StarsBackground';
+import { useLoading } from '../../App/App';
 
 
 function IsApodDateValid(date: string | undefined): string | 'invalid' {
@@ -39,8 +40,7 @@ const getBasePath = () => {
 
 export const ApodLoader = (url: LoaderFunctionArgs<any>) => {
   if (!url.params.hasOwnProperty('date') || url.params.date === undefined) {
-    return redirect(getBasePath() + new Date().toISOString().substring(0, 10)
-    );
+    return redirect(getBasePath() + new Date().toISOString().substring(0, 10));
   }
 
   const apodDateString = IsApodDateValid(url.params.date);
@@ -56,11 +56,28 @@ export function Apod() {
   const params = useParams<{date: string}>();
   const navigate = useNavigate();
   const location = useLocation();
+  const loadingCtx = useLoading();
 
-  // const [status, setStatus] = React.useState<'idle' | 'loading'>('loading');
   const [apodArray, setApodArray] = React.useState(new Array<ApodEntry>());
   const [selectedDate, setSelectedDate] = React.useState(new Date("1970-01-01"));
   const [selectedApod, setSelectedApod] = React.useState({} as ApodEntry);
+  const [waitCnt, setWaitCnt] = React.useState<number>(1);
+
+
+  // Проверяем что все загрузилось при изменении счетчика загрузки
+  React.useEffect(() => {
+    var loadTimer: number = 0;
+
+    if (waitCnt == 0) {
+      loadTimer = setTimeout(() => {
+        loadingCtx.setLoading(false);
+      }, 500);
+    }
+
+    return () => {
+      clearTimeout(loadTimer);
+    }
+  }, [waitCnt]);
 
 
   React.useEffect(() => {
@@ -77,6 +94,7 @@ export function Apod() {
 
       setSelectedApod(apod);
       setSelectedDate(newDate);
+      setWaitCnt(0);
       return;
     }
 
@@ -97,8 +115,10 @@ export function Apod() {
       setApodArray(value);
       setSelectedApod(apod);
       setSelectedDate(newDate);
+      setWaitCnt(0);
     });
-  }, [location]);
+  }, [location, loadingCtx]);
+
 
   // Колбэк для галереи для изменения текущего отображаемого APOD
   const changeApod = React.useCallback((date: Date) => {
@@ -122,8 +142,9 @@ export function Apod() {
     });
   }, []);
 
-  // TODO: Как-то не раскрывать шторку если не загрузиласть страница
+
   // TODO: Навести красоту в стилях
+  // XXX: Сделать элемент "умной" картинки, которая фиксит ивент загрузки изображения
   // XXX?: Добавить лоадер
   return (
     <div className={styles.wrapper}>
@@ -162,6 +183,7 @@ export function Apod() {
             src={selectedApod.url}
             allowFullScreen
             title={selectedApod.title}
+            onLoad={() => {setWaitCnt(0)}}
           >
             video
           </iframe>
