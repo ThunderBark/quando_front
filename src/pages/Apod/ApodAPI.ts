@@ -19,17 +19,21 @@ export async function fetchDateRange(
   firstDay = "2000-01-01",
   lastDay = "2000-02-01",
 ) {
-  // FIXME: УБРАТЬ КЛЮЧ
+  console.log(import.meta.env.VITE_NASA_API_KEY);
   return fetch(
     "https://api.nasa.gov/planetary/apod?" +
       new URLSearchParams([
-        ["api_key", "DEMO_KEY"],
+        ["api_key", import.meta.env.VITE_NASA_API_KEY],
         ["start_date", firstDay.toString()],
         ["end_date", lastDay.toString()],
         ["thumbs", "true"],
       ])
   )
-  .then((response: Response) =>
-    response.json()
+  .then((response: Response) => {
+      if (!response.ok) {
+        throw Error("Can't load data!");
+      }
+      return response.json()
+    }
   );
 }
