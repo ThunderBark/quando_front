@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './Navbar.module.css';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { PathPattern, useLocation, useMatch, useMatches, useNavigate } from 'react-router-dom';
 import routes from '../../routes';
 
 
 // Функция для обработки лоадера при смене страницы
-const onPageChange = (button: HTMLButtonElement | null) => {
+const closeDrawer = (button: HTMLButtonElement) => {
   // Пролистываем страницу вверх
   setTimeout(() => {
     window.scrollTo({
@@ -29,61 +29,72 @@ const onPageChange = (button: HTMLButtonElement | null) => {
   // Закрываем шторку
   document.getElementsByClassName(styles.container)[0].classList.add(styles.expanded);
   document.body.classList.add(styles.disable_scroll);
-
-  // Через время...
-  setTimeout(() => {
-    // Возвращаем все кнопки
-    for (var i = 0; i < list.length; i++) {
-      if (list[i] !== button) {
-        list[i].classList.remove(styles.inactive);
-      }
-    }
-
-    // Открываем шторку
-    document.getElementsByClassName(styles.container)[0].classList.remove(styles.expanded);
-    document.body.classList.remove(styles.disable_scroll);
-  }, 1500);
 }
 
 
-function PageButton(props: {text: string, route: string}) {
-  const location = useLocation();
-  const navigate = useNavigate();
+const PageButton = (
+  props: {
+    text: string,
+    route: string,
+    active: boolean
+    onButtonPress: (e: React.MouseEvent) => void
+  }
+) => {
 
   return (
     <button
-      id={props.route}
-      className={styles.button + ' ' + ((location.pathname !== props.route) ? styles.inactive : '')}
-      onClick={(e: React.MouseEvent) => {
-        onPageChange(e.target as HTMLButtonElement);
-        setTimeout(() => {
-          navigate(props.route);
-        }, 500);
+      id={ props.route }
+
+      className={
+        styles.button + ' ' +
+        (props.active ? '' : styles.inactive)
       }
-    }>
+
+      onClick={props.onButtonPress}
+    >
       {props.text}
     </button>
   )
 }
 
 
-function Navbar() {
+const Navbar = (props: {
+  isLoading: boolean
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+}) => {
+
+  const getRoute = (): string => {
+    const match = matches.find((value) => value.pathname.includes(location.pathname))
+    if (match === undefined) {
+      return '';
+    }
+    var route = match.pathname;
+    Object.keys(match.params).forEach((key, index) => {
+      route = route.replace(match.params[key]!, '');
+    })
+    return route;
+  }
+
+  const matches = useMatches();
+  const navigate = useNavigate();
+  const [activeRoute, setActiveRoute] = React.useState<string>(getRoute());
+
+
 
   React.useEffect(() => {
-    const curPage = ('/' + location.pathname.split('/')[1]);
-    // Находим подходящую кнопку-заглавье для текущей страницы
-    var button: HTMLButtonElement | null = null;
-    const list = document.getElementsByClassName(styles.button);
-    for (var i = 0; i < list.length; i++) {
-      if (list[i].id === curPage) {
-        button = list[i] as HTMLButtonElement;
-        break;
+    if (!props.isLoading) {
+      const list = document.getElementsByClassName(styles.button);
+      // Возвращаем все кнопки
+      for (var i = 0; i < list.length; i++) {
+        list[i].classList.remove(styles.inactive);
       }
+  
+      // Открываем шторку
+      document.getElementsByClassName(styles.container)[0].classList.remove(styles.expanded);
+      document.body.classList.remove(styles.disable_scroll);
     }
+  }, [props.isLoading]);
 
-    // Делаем анимацию смены страницы
-    onPageChange(button);
-  });
 
   return (
     <nav className={styles.container + ' ' + styles.expanded}>
@@ -92,6 +103,18 @@ function Navbar() {
           text={item.title}
           route={item.basepath}
           key={item.basepath}
+          active={item.basepath === activeRoute}
+          onButtonPress={(e: React.MouseEvent) => {
+            // Выставляем статус что шторка открывается
+            props.setLoading(true);
+            setActiveRoute(item.basepath);
+            // Закрываем шторку
+            closeDrawer(e.target as HTMLButtonElement);
+            // После окончания анимации переключаем страницу
+            setTimeout(() => {
+              navigate(item.basepath);
+            }, 500);
+          }}
         />
       )}
     </nav>

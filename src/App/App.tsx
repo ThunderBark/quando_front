@@ -1,19 +1,39 @@
-import { Outlet, RouteObject, createBrowserRouter } from 'react-router-dom';
+import { Outlet, RouteObject, createBrowserRouter, redirect, useOutletContext } from 'react-router-dom';
 import Navbar from '../components/Navbar/Navbar';
 import { Footer } from '../components/Footer/Footer';
 import styles from './App.module.css';
 import 'minireset.css';
 import routes from '../routes';
 import { UnhandledPath } from '../pages/UnhandledPath/UnhandledPath';
+import React from 'react';
 
 
-function AppLayout() {
+type LoadingContext = {
+  isLoading: boolean
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+};
+
+export const useLoading = () => {
+  return useOutletContext<LoadingContext>();
+}
+
+const AppLayout = () => {
+  const [loading, setLoading] = React.useState(true);
+
   return (
     <div className={styles.app}>
-      <Navbar />
+      <Navbar
+        isLoading={loading}
+        setLoading={setLoading}
+      />
+
       <main className={styles.main_container}>
-        <Outlet />
+        <Outlet context={{
+          isLoading: loading,
+          setLoading: setLoading
+        } satisfies LoadingContext} />
       </main>
+
       <Footer />
     </div>
   );
@@ -31,7 +51,14 @@ export const App = createBrowserRouter([{
     }),
     {
       path: '*',
-      element: <UnhandledPath/>
+      element: <UnhandledPath/>,
+      loader: (args) => {
+        console.log(location.pathname);
+        if (location.pathname === '/') {
+          return redirect(routes[0].basepath);
+        }
+        return 0;
+      }
     }
   ]
 }]);

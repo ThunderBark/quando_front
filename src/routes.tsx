@@ -13,7 +13,7 @@ const routes: Array<{
 }> = [
   {
     title: 'ОБО МНЕ',
-    basepath: '/',
+    basepath: '/profile/',
     element: <Profile/>,
     params: []
   },
