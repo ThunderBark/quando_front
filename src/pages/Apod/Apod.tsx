@@ -71,13 +71,13 @@ export function Apod() {
     if (waitCnt == 0) {
       loadTimer = setTimeout(() => {
         loadingCtx.setLoading(false);
-      }, 500);
+      }, 1000);
     }
 
     return () => {
       clearTimeout(loadTimer);
     }
-  }, [waitCnt]);
+  }, [waitCnt, loadingCtx]);
 
 
   React.useEffect(() => {
@@ -117,7 +117,7 @@ export function Apod() {
       setSelectedDate(newDate);
       setWaitCnt(0);
     });
-  }, [location, loadingCtx]);
+  }, [location]);
 
 
   // Колбэк для галереи для изменения текущего отображаемого APOD
