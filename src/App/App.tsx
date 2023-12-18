@@ -53,7 +53,6 @@ export const App = createBrowserRouter([{
       path: '*',
       element: <UnhandledPath/>,
       loader: (args) => {
-        console.log(location.pathname);
         if (location.pathname === '/') {
           return redirect(routes[0].basepath);
         }
