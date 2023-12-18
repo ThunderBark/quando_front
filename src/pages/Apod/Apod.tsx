@@ -7,6 +7,7 @@ import { getApodForMonth } from './ApodActions';
 import routes from '../../routes';
 import { StarsBackground } from '../../components/StarsBackground/StarsBackground';
 import { useLoading } from '../../App/App';
+import { Picture } from './Picture/Picture';
 
 
 function IsApodDateValid(date: string | undefined): string | 'invalid' {
@@ -150,30 +151,10 @@ export function Apod() {
     <div className={styles.wrapper}>
       <StarsBackground/>
       {selectedApod?.media_type === "image" && (
-        <div className={styles.imgWrapper}>
-          <img
-            className={styles.image}
-            src={selectedApod.url}
-            alt={selectedApod.title}
-            onClick={() => {window.open(selectedApod.hdurl)}}
-          />
-          <a
-            className={styles.descrLink}
-            href={selectedApod.hdurl}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <div className={styles.content}>
-              <div className={styles.title}>
-                <h2>{selectedApod.title}</h2>
-                <p>By {selectedApod.copyright}, {selectedApod.date}</p>
-              </div>
-              <div className={styles.description}>
-                {selectedApod.explanation}
-              </div>
-            </div>
-          </a>
-        </div>
+        <Picture
+          apod={selectedApod}
+          onClick={() => {window.open(selectedApod.hdurl)}}
+        />
       )}
       {selectedApod?.media_type === "video" && (
         <div className={styles.videoWrapper}>

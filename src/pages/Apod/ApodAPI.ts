@@ -19,7 +19,6 @@ export async function fetchDateRange(
   firstDay = "2000-01-01",
   lastDay = "2000-02-01",
 ) {
-  console.log(import.meta.env.VITE_NASA_API_KEY);
   return fetch(
     "https://api.nasa.gov/planetary/apod?" +
       new URLSearchParams([

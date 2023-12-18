@@ -131,43 +131,45 @@ export function Gallery(props: {
       <hr className={styles.hr} />
       
       {state === 'loading' && <Loader/>}
-      {state === 'idle' && <div className={styles.grid}>
-        {props.galleryArray.map((item, index) =>
-          <div
-            id={item.date}
-            className={styles.item + ' ' + styles.inactive}
-            key={index}
-            title={item.title}
-            onClick={() => {
-              props.onApodChange(new Date(item.date));
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-          >
-            <img
-              className={styles.itemImg}
-              src={item.media_type === 'image' ? item.url : item.thumbnail_url}
-              alt={item.title}
-              onLoad={() => {
-                document.getElementById(item.date)!.classList.remove(styles.inactive)
+      {state === 'idle' && (
+        <div className={styles.grid}>
+          {props.galleryArray.map((item, index) =>
+            <div
+              id={item.date}
+              className={styles.item + ' ' + styles.inactive}
+              key={index}
+              title={item.title}
+              onClick={() => {
+                props.onApodChange(new Date(item.date));
+                window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-            />
-            <div>
-              {item.date.substring(
-                item.date.charAt(item.date.length - 2) === "0" ? 9 : 8,
-                10
+            >
+              <img
+                className={styles.itemImg}
+                src={item.media_type === 'image' ? item.url : item.thumbnail_url}
+                alt={item.title}
+                onLoad={() => {
+                  document.getElementById(item.date)!.classList.remove(styles.inactive)
+                }}
+              />
+              <div>
+                {item.date.substring(
+                  item.date.charAt(item.date.length - 2) === "0" ? 9 : 8,
+                  10
+                )}
+              </div>
+
+              {item.media_type === "video" && (
+                <img
+                  className={styles.youtubeLogo}
+                  src='/youtube_logo.png'
+                  alt='video logo'
+                ></img>
               )}
             </div>
-
-            {item.media_type === "video" && (
-              <img
-                className={styles.youtubeLogo}
-                src='/youtube_logo.png'
-                alt='video logo'
-              ></img>
-            )}
-          </div>
-        )}
-      </div>}
+          )}
+      </div>)
+      }
     </div>
   )
 }
