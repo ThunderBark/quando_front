@@ -64,6 +64,20 @@ export function Apod() {
   const [selectedApod, setSelectedApod] = React.useState({} as ApodEntry);
   const [waitCnt, setWaitCnt] = React.useState<number>(1);
 
+  const [isShowingStars, setShowingStars] = React.useState(false);
+
+
+  const toggleStars = (e: KeyboardEvent) => {
+    if (e.key === 's' || e.key === 'S') {
+      setShowingStars(!isShowingStars);
+    }
+  };
+
+  React.useEffect(() => {
+    window.addEventListener('keydown', toggleStars);
+    return () => window.removeEventListener('keydown', toggleStars);
+  });
+
 
   // Проверяем что все загрузилось при изменении счетчика загрузки
   React.useEffect(() => {
@@ -144,19 +158,17 @@ export function Apod() {
   }, []);
 
 
-  // TODO: Навести красоту в стилях
   // XXX: Сделать элемент "умной" картинки, которая фиксит ивент загрузки изображения
-  // XXX?: Добавить лоадер
   return (
     <div className={styles.wrapper}>
       <StarsBackground/>
-      {selectedApod?.media_type === "image" && (
+      {!isShowingStars && selectedApod?.media_type === "image" && (
         <Picture
           apod={selectedApod}
           onClick={() => {window.open(selectedApod.hdurl)}}
         />
       )}
-      {selectedApod?.media_type === "video" && (
+      {!isShowingStars && selectedApod?.media_type === "video" && (
         <div className={styles.videoWrapper}>
           <iframe
             width="100%"
@@ -177,15 +189,16 @@ export function Apod() {
           </div>
         </div>
       )}
-
       <hr className={styles.hr} />
 
-      <Gallery
-        selectedDate={selectedDate}
-        galleryArray={apodArray}
-        onApodChange={changeApod}
-        onYearMonthChange={loadMonthYear}
-      />
+      {!isShowingStars && 
+        <Gallery
+          selectedDate={selectedDate}
+          galleryArray={apodArray}
+          onApodChange={changeApod}
+          onYearMonthChange={loadMonthYear}
+        />
+      }
     </div>
   )
 }
