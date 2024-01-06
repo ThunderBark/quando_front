@@ -1,5 +1,6 @@
 
 .wrapper {
+  position: relative;
   flex-grow: 1;
   flex-basis: 0;
 
@@ -30,6 +31,24 @@
   margin: 1em;
 }
 
+.hideButton {
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  cursor: pointer;
+
+  width: 2vw;
+  height: auto;
+
+  opacity: 10%;
+  transition: opacity 0.3s;
+}
+
+.hideButton:hover {
+  opacity: 90%;
+}
+
 @media screen and (max-width: 800px) {
   .wrapper {
     flex-basis: unset;
@@ -39,6 +58,10 @@
 
   .videoContent > div {
     text-align: justify;
+  }
+
+  .hideButton {
+    width: 5vh;
   }
 
   .hr {

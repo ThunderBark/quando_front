@@ -67,18 +67,6 @@ export function Apod() {
   const [isShowingStars, setShowingStars] = React.useState(false);
 
 
-  const toggleStars = (e: KeyboardEvent) => {
-    if (e.key === 's' || e.key === 'S') {
-      setShowingStars(!isShowingStars);
-    }
-  };
-
-  React.useEffect(() => {
-    window.addEventListener('keydown', toggleStars);
-    return () => window.removeEventListener('keydown', toggleStars);
-  });
-
-
   // Проверяем что все загрузилось при изменении счетчика загрузки
   React.useEffect(() => {
     var loadTimer: number = 0;
@@ -189,7 +177,9 @@ export function Apod() {
           </div>
         </div>
       )}
-      <hr className={styles.hr} />
+      {!isShowingStars && 
+        <hr className={styles.hr} />
+      }
 
       {!isShowingStars && 
         <Gallery
@@ -199,6 +189,12 @@ export function Apod() {
           onYearMonthChange={loadMonthYear}
         />
       }
+
+      <img
+        className={styles.hideButton}
+        onClick={() => setShowingStars(!isShowingStars)}
+        src='/icons8-stars-96.png'
+      />
     </div>
   )
 }
