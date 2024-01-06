@@ -65,6 +65,7 @@
   }
 
   .hr {
+    margin: auto;
     display: block;
     width: 80%;
     color: grey;
