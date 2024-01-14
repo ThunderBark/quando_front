@@ -95,18 +95,12 @@ export function Profile() {
       </article>
 
       <h1 className={styles.header}>
-        <a rel='noreferrer' target='_blank' href='https://thunderbark.github.io/good-nasa-apod/'>
-          GOOD NASA APOD
+        <a href='../apod'>
+          NASA APOD
         </a>
       </h1>
       <article className={styles.project_container}>
-        {/* <iframe
-          className={styles.preview}
-          id="inlineFrameExample"
-          title="Inline Frame Example"
-          src="https://thunderbark.github.io/good-nasa-apod/"
-        /> */}
-        <div className={styles.text}>
+        <div className={styles.text + ' ' + styles.text_full}>
           <p>
             Сайтик, в котором вы можете посмотреть картиночки и видосы,
             которые подбирают каждый день сами NASA.
@@ -115,6 +109,12 @@ export function Profile() {
             Сайт позволяет 
             посмотреть текущий и предыдущие посты вплоть до начала этой
             программы NASA в 1996 году. 
+          </p>
+          <p>
+            Также есть старая версия данного сайта с хостом на github pages:&nbsp;
+            <a target="_blank" rel="noopener noreferrer" href='https://thunderbark.github.io/good-nasa-apod/'>
+              https://thunderbark.github.io/good-nasa-apod/
+            </a>
           </p>
         </div>
       </article>
