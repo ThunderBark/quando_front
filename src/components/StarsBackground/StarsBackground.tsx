@@ -94,26 +94,34 @@ export const StarsBackground = memo(() => {
     starData.map((item) => {
       const offset_t = (((t + item.startOffset) * 100) % 100) / 100;
       const startPosVec = getVec(
-        {x: w/2, y: h/2},
+        {x: w / 2, y: h / 2},
         {x: item.startX, y: item.startY}
       );
       const posVecLen = vecLen(startPosVec);
       const pathLen = spaceSize / 2 - posVecLen;
       const directionVec = vecNorm(startPosVec);
-      const progress: number = cubicBezier(
+      const pathProgress: number = cubicBezier(
         offset_t,
-        0,
-        0,
-        0,
+        0.0,
+        0.0,
+        0.0,
         1
+      );
+      const closenessCoef = pathLen / (spaceSize / 2);
+      const sizeProgress: number = cubicBezier(
+        offset_t,
+        closenessCoef * 0.1,
+        closenessCoef * 0.3,
+        closenessCoef * 0.5,
+        closenessCoef
       );
 
       drawStar(
         ctx,
-        item.startX + progress * directionVec.x * pathLen,
-        item.startY + progress * directionVec.y * pathLen,
-        progress * (pathLen / (spaceSize / 2)) * 3,
-        1
+        item.startX + pathProgress * directionVec.x * pathLen,
+        item.startY + pathProgress * directionVec.y * pathLen,
+        sizeProgress * 5,
+        sizeProgress
       );
       return 0;
     });
