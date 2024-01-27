@@ -80,7 +80,7 @@ export const StarsBackground = memo(() => {
     h : number,
     density : number,
   ) => {
-    const animationDuration = 5000;
+    const animationDuration = 20000;
 
     const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
     const ctx : CanvasRenderingContext2D = canvas.getContext('2d')!;
