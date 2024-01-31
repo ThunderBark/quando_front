@@ -93,6 +93,13 @@ export const StarsBackground = memo(() => {
 
     starData.map((item) => {
       const offset_t = (((t + item.startOffset) * 100) % 100) / 100;
+
+      // В конце каждого цикла анимации двигаем начальное положение звезды
+      if (Math.floor(offset_t * 100) === 0) {
+        item.startX = Math.random() * w;
+        item.startY = Math.random() * h;
+      }
+
       const startPosVec = getVec(
         {x: w / 2, y: h / 2},
         {x: item.startX, y: item.startY}
