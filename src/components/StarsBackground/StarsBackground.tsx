@@ -49,9 +49,7 @@ const cubicBezier = (
 export const StarsBackground = memo(() => {
   const dpi_x = document.getElementById('dpi')!.offsetWidth;
   const dpi_y = document.getElementById('dpi')!.offsetHeight;
-  const width = screen.width / dpi_x;
-  const height = screen.height / dpi_y;
-  const starNumber: number = Math.round((height * width) * 5);
+  const starNumber: number = Math.round((dpi_x * dpi_y) / 4);
 
   var starData: Array<{
     startX: number,
@@ -92,7 +90,7 @@ export const StarsBackground = memo(() => {
     const t = ((new Date).getTime() % animationDuration) / animationDuration;
 
     starData.map((item) => {
-      const offset_t = (((t + item.startOffset) * 100) % 100) / 100;
+      const offset_t = (((t + item.startOffset) * 1000) % 1000) / 1000;
 
       // В конце каждого цикла анимации двигаем начальное положение звезды
       if (Math.floor(offset_t * 100) === 0) {
@@ -142,7 +140,7 @@ export const StarsBackground = memo(() => {
       window.innerHeight,
       Math.min(dpi_x, dpi_y)
     );
-  
+
     window.requestAnimationFrame(draw);
   };
 
@@ -163,21 +161,6 @@ export const StarsBackground = memo(() => {
 
   return (
     <div className={styles.wrapper}>
-      {/* {Array.from(Array(starNumber)).map(() => {
-          const starSize = Math.max(0.2, Math.random());
-          const starSpeed = (1 / starSize) + (Math.random() - 0.5) / 4;
-
-          return (<div className={styles.star} style={{
-            left: Math.random() * 100 + '%',
-            width: starSize * 0.3 + 'em',
-            animationName: styles.move_up + ',' + styles.fade,
-            animationTimingFunction: 'linear, ease',
-            animationDirection: 'normal, alternate',
-            animationDuration: starSpeed * 30 + 's,' + starSize * 20 + 's',
-            animationDelay: -Math.random() * starSpeed * 30 + 's,' + -Math.random() * starSize * 20 + 's',
-          } as React.CSSProperties}/>)
-        })
-      } */}
       <canvas 
         id='starsCanvas'
         style={{height: '100vh', width: '100vw'}}
