@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { ApodEntry } from "../ApodAPI";
-import styles from './Picture.module.css';
+import styles from './Showcase.module.css';
 
 
-export const Picture = (props: {
+export const Showcase = (props: {
   apod: ApodEntry
   onLoad?: React.ReactEventHandler<HTMLImageElement>
   onClick?: React.MouseEventHandler<HTMLImageElement>
@@ -11,26 +11,24 @@ export const Picture = (props: {
   const [apod, setApod] = useState(props.apod);
   const [timer, setTimer] = useState(0);
 
-  const container = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
 
   useEffect(() => {
     clearTimeout(timer);
 
-
-    container.current?.classList.remove(styles.visible);
+    containerRef.current?.classList.remove(styles.visible);
     setTimer(setTimeout(() => {
       setApod(props.apod);
-      container.current?.classList.add(styles.visible);
+      containerRef.current?.classList.add(styles.visible);
     }, 300));
-
 
     return () => {clearTimeout(timer)}
   }, [props.apod]);
 
 
   return (
-    <div ref={container} className={styles.container}>
+    <div ref={containerRef} className={styles.container}>
       <img
         className={styles.image + ' ' + styles.visible}
         src={apod.url}
