@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import styles from './Apod.module.css';
 import { Gallery } from './Gallery/Gallery';
 import { ApodEntry, ApodResponse } from './ApodAPI';
@@ -7,7 +7,7 @@ import { getApodForMonth } from './ApodActions';
 import routes from '../../routes';
 import { StarsBackground } from '../../components/StarsBackground/StarsBackground';
 import { useLoading } from '../../App/App';
-import { Picture } from './Picture/Picture';
+import { Showcase } from './Showcase/Showcase';
 
 
 function IsApodDateValid(date: string | undefined): string | 'invalid' {
@@ -151,7 +151,7 @@ export function Apod() {
     <div className={styles.wrapper}>
       <StarsBackground/>
       {!isShowingStars && selectedApod?.media_type === "image" && (
-        <Picture
+        <Showcase
           apod={selectedApod}
           onClick={() => {window.open(selectedApod.hdurl)}}
         />
