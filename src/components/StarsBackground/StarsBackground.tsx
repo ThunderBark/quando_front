@@ -1,49 +1,85 @@
 import React from 'react';
 import { memo } from 'react';
 import styles from './StarsBackground.module.css'
+import { point2d, cubicBezier, getVec, vecLen, vecNorm, debounce } from '../../utils/utils';
 
 
-const getVec = (
-  point1: {x: number, y: number},
-  point2: {x: number, y: number}
-): {x: number, y: number} => {
+type starData = {
+  start: point2d,
+  startOffset: number,
+  pathDir: point2d,
+  pathLen: number
+};
 
-  return {
-    x: point2.x - point1.x,
-    y: point2.y - point1.y
-  };
-}
-
-const vecLen = (
-  vec: {x: number, y: number}
+/**
+ * 
+ * @param canvasId 
+ * @param w 
+ * @param h 
+ */
+const drawStars = (
+  canvasId : string,
+  w : number,
+  h : number,
+  starDataArr: Array<starData>
 ) => {
-  return Math.sqrt(
-    vec.x * vec.x + vec.y * vec.y
-  );
-}
+  const animationDuration = 20000;
 
-const vecNorm = (
-  vec: {x: number, y: number}
-): {x: number, y: number} => {
-  return {
-    x: vec.x / vecLen({x: vec.x, y: vec.y}),
-    y: vec.y / vecLen({x: vec.x, y: vec.y})
-  };
-}
+  const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
+  const ctx : CanvasRenderingContext2D = canvas.getContext('2d', { alpha: false })!;
+  const spaceSize = 1.3 *  Math.max(w, h);
 
 
-const cubicBezier = (
-  t: number,
-  p1: number,
-  p2: number,
-  p3: number,
-  p4: number
-): number => {
-  return Math.pow((1 - t), 3) * p1 +
-  3 * Math.pow((1 - t), 2) * t * p2 + 
-  3 * (1 - t) * t * t * p3 +
-  Math.pow(t, 3) * p4;
-}
+  ctx.clearRect(0, 0, w, h);
+
+  const t = ((new Date).getTime() % animationDuration) / animationDuration;
+
+  starDataArr.map((item) => {
+    const offset_t = (((t + item.startOffset) * 1000) % 1000) / 1000;
+
+    // В конце каждого цикла анимации двигаем начальное положение звезды
+    if (Math.floor(offset_t * 10000) === 0) {
+      item.start.x = Math.random() * w;
+      item.start.y = Math.random() * h;
+
+      const startPosVec = getVec(
+        {x: window.innerWidth / 2, y: window.innerHeight / 2},
+        {x: item.start.x, y: item.start.y}
+      );
+
+      item.pathDir = vecNorm(startPosVec);
+      item.pathLen = spaceSize / 2 - vecLen(startPosVec);
+    }
+
+    const pathProgress: number = cubicBezier(
+      offset_t,
+      0.0,
+      0.0,
+      0.0,
+      1
+    );
+    const closenessCoef = item.pathLen / (spaceSize / 2);
+    const sizeProgress: number = cubicBezier(
+      offset_t,
+      closenessCoef * 0.1,
+      closenessCoef * 0.3,
+      closenessCoef * 0.5,
+      closenessCoef
+    );
+
+    ctx.fillStyle = 'rgb(' + sizeProgress * 255 + ', ' + sizeProgress * 255 + ', ' + sizeProgress * 255 + ')';
+    ctx.beginPath();
+    ctx.arc(
+      item.start.x + pathProgress * item.pathDir.x * item.pathLen,
+      item.start.y + pathProgress * item.pathDir.y * item.pathLen,
+      Math.abs(sizeProgress * 5),
+      0,
+      2 * Math.PI
+    );
+    ctx.fill();
+    return 0;
+  });
+};
 
 
 export const StarsBackground = memo(() => {
@@ -51,103 +87,26 @@ export const StarsBackground = memo(() => {
   const dpi_y = document.getElementById('dpi')!.offsetHeight;
   const starNumber: number = Math.round((dpi_x * dpi_y) / 4);
 
-  var starData: Array<{
-    startX: number,
-    startY: number,
-    startOffset: number,
-    pathDir: {x: number, y: number},
-    pathLen: number
-  }> = [];
+  const [canvasWidth, setCanvasWidth] = React.useState<number>(window.innerWidth);
+  const [canvasHeight, setCanvasHeight] = React.useState<number>(window.innerHeight);
 
-
-  const drawStar = (
-    ctx : CanvasRenderingContext2D,
-    x : number,
-    y : number,
-    size : number,
-    opacity : number,
-  ) => {
-    ctx.fillStyle = 'rgb(' + opacity * 255 + ', ' + opacity * 255 + ', ' + opacity * 255 + ')';
-    ctx.beginPath();
-    ctx.arc(x, y, size, 0, 2 * Math.PI);
-    ctx.fill();
-  };
-
-
-  const drawStars = (
-    canvasId : string,
-    w : number,
-    h : number,
-  ) => {
-    const animationDuration = 20000;
-
-    const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
-    const ctx : CanvasRenderingContext2D = canvas.getContext('2d', { alpha: false })!;
-    const spaceSize = 1.3 *  Math.max(w, h);
+  var starDataArr: Array<starData> = [];
 
   
-    ctx.clearRect(0, 0, w, h);
-
-    const t = ((new Date).getTime() % animationDuration) / animationDuration;
-
-    starData.map((item) => {
-      const offset_t = (((t + item.startOffset) * 1000) % 1000) / 1000;
-
-      // В конце каждого цикла анимации двигаем начальное положение звезды
-      if (Math.floor(offset_t * 10000) === 0) {
-        item.startX = Math.random() * w;
-        item.startY = Math.random() * h;
-
-        const startPosVec = getVec(
-          {x: window.innerWidth / 2, y: window.innerHeight / 2},
-          {x: item.startX, y: item.startY}
-        );
-
-        item.pathDir = vecNorm(startPosVec);
-        item.pathLen = spaceSize / 2 - vecLen(startPosVec);
-      }
-
-      const pathProgress: number = cubicBezier(
-        offset_t,
-        0.0,
-        0.0,
-        0.0,
-        1
-      );
-      const closenessCoef = item.pathLen / (spaceSize / 2);
-      const sizeProgress: number = cubicBezier(
-        offset_t,
-        closenessCoef * 0.1,
-        closenessCoef * 0.3,
-        closenessCoef * 0.5,
-        closenessCoef
-      );
-
-      drawStar(
-        ctx,
-        item.startX + pathProgress * item.pathDir.x * item.pathLen,
-        item.startY + pathProgress * item.pathDir.y * item.pathLen,
-        sizeProgress * 5,
-        sizeProgress
-      );
-      return 0;
-    });
-  };
-  
-
+  var drawId = 0;
   const draw = () => {
     drawStars(
       'starsCanvas',
       window.innerWidth,
       window.innerHeight,
+      starDataArr
     );
 
-    window.requestAnimationFrame(draw);
+    drawId = window.requestAnimationFrame(draw);
   };
 
-
-  React.useEffect(() => {
-    starData = [];
+  const resetStarDataArr = () => {
+    starDataArr = [];
     Array.from(Array(starNumber)).map(() => {
       const x = Math.random() * window.innerWidth;
       const y = Math.random() * window.innerHeight;
@@ -157,16 +116,29 @@ export const StarsBackground = memo(() => {
         {x: x, y: y}
       );
 
-      starData.push({
-        startX: x,
-        startY: y,
+      starDataArr.push({
+        start: {x: x, y: y},
         startOffset: Math.random(),
         pathDir: vecNorm(startPosVec),
         pathLen: spaceSize / 2 - vecLen(startPosVec),
       })
     });
+  }
 
+  React.useEffect(() => {
+    resetStarDataArr();
     draw();
+
+    onresize = debounce(() => {
+      window.cancelAnimationFrame(drawId);
+
+      setCanvasHeight(window.innerHeight);
+      setCanvasWidth(window.innerWidth);
+
+      resetStarDataArr();
+
+      draw();
+    });
   }, []);
 
 
@@ -175,8 +147,8 @@ export const StarsBackground = memo(() => {
       <canvas 
         id='starsCanvas'
         style={{height: '100vh', width: '100vw'}}
-        width={window.innerWidth}
-        height={window.innerHeight}
+        width={canvasWidth}
+        height={canvasHeight}
       />
     </div>
   )
