@@ -54,7 +54,9 @@ export const StarsBackground = memo(() => {
   var starData: Array<{
     startX: number,
     startY: number,
-    startOffset: number
+    startOffset: number,
+    pathDir: {x: number, y: number},
+    pathLen: number
   }> = [];
 
 
@@ -65,7 +67,7 @@ export const StarsBackground = memo(() => {
     size : number,
     opacity : number,
   ) => {
-    ctx.fillStyle = 'rgba(255, 255, 255, ' + opacity + ')';
+    ctx.fillStyle = 'rgb(' + opacity * 255 + ', ' + opacity * 255 + ', ' + opacity * 255 + ')';
     ctx.beginPath();
     ctx.arc(x, y, size, 0, 2 * Math.PI);
     ctx.fill();
@@ -76,12 +78,11 @@ export const StarsBackground = memo(() => {
     canvasId : string,
     w : number,
     h : number,
-    density : number,
   ) => {
     const animationDuration = 20000;
 
     const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
-    const ctx : CanvasRenderingContext2D = canvas.getContext('2d')!;
+    const ctx : CanvasRenderingContext2D = canvas.getContext('2d', { alpha: false })!;
     const spaceSize = 1.3 *  Math.max(w, h);
 
   
@@ -93,18 +94,19 @@ export const StarsBackground = memo(() => {
       const offset_t = (((t + item.startOffset) * 1000) % 1000) / 1000;
 
       // В конце каждого цикла анимации двигаем начальное положение звезды
-      if (Math.floor(offset_t * 100) === 0) {
+      if (Math.floor(offset_t * 10000) === 0) {
         item.startX = Math.random() * w;
         item.startY = Math.random() * h;
+
+        const startPosVec = getVec(
+          {x: window.innerWidth / 2, y: window.innerHeight / 2},
+          {x: item.startX, y: item.startY}
+        );
+
+        item.pathDir = vecNorm(startPosVec);
+        item.pathLen = spaceSize / 2 - vecLen(startPosVec);
       }
 
-      const startPosVec = getVec(
-        {x: w / 2, y: h / 2},
-        {x: item.startX, y: item.startY}
-      );
-      const posVecLen = vecLen(startPosVec);
-      const pathLen = spaceSize / 2 - posVecLen;
-      const directionVec = vecNorm(startPosVec);
       const pathProgress: number = cubicBezier(
         offset_t,
         0.0,
@@ -112,7 +114,7 @@ export const StarsBackground = memo(() => {
         0.0,
         1
       );
-      const closenessCoef = pathLen / (spaceSize / 2);
+      const closenessCoef = item.pathLen / (spaceSize / 2);
       const sizeProgress: number = cubicBezier(
         offset_t,
         closenessCoef * 0.1,
@@ -123,8 +125,8 @@ export const StarsBackground = memo(() => {
 
       drawStar(
         ctx,
-        item.startX + pathProgress * directionVec.x * pathLen,
-        item.startY + pathProgress * directionVec.y * pathLen,
+        item.startX + pathProgress * item.pathDir.x * item.pathLen,
+        item.startY + pathProgress * item.pathDir.y * item.pathLen,
         sizeProgress * 5,
         sizeProgress
       );
@@ -138,7 +140,6 @@ export const StarsBackground = memo(() => {
       'starsCanvas',
       window.innerWidth,
       window.innerHeight,
-      Math.min(dpi_x, dpi_y)
     );
 
     window.requestAnimationFrame(draw);
@@ -148,10 +149,20 @@ export const StarsBackground = memo(() => {
   React.useEffect(() => {
     starData = [];
     Array.from(Array(starNumber)).map(() => {
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * window.innerHeight;
+      const spaceSize = 1.3 *  Math.max(window.innerWidth, window.innerHeight);
+      const startPosVec = getVec(
+        {x: window.innerWidth / 2, y: window.innerHeight / 2},
+        {x: x, y: y}
+      );
+
       starData.push({
-        startX: Math.random() * window.innerWidth,
-        startY: Math.random() * window.innerHeight,
-        startOffset: Math.random()
+        startX: x,
+        startY: y,
+        startOffset: Math.random(),
+        pathDir: vecNorm(startPosVec),
+        pathLen: spaceSize / 2 - vecLen(startPosVec),
       })
     });
 
