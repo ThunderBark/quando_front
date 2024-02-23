@@ -95,6 +95,10 @@ const Navbar = (props: {
     }
   }, [props.isLoading]);
 
+  React.useEffect(() => {
+    document.body.classList.add(styles.disable_scroll);
+  }, []);
+
 
   return (
     <nav className={styles.container + ' ' + styles.expanded}>
