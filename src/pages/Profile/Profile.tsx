@@ -23,7 +23,7 @@ export function Profile() {
 
   return (
     <main className={styles.container}>
-      <div className={styles.about_container}>
+      <div className={styles.about_container + ' ' + styles.glass}>
         <img
           className={styles.avatar}
           src='/avatar.jpeg'
@@ -61,63 +61,66 @@ export function Profile() {
           </div>
         </div>
       </div>
-      
-      <hr/>
 
-      <h1 className={styles.header}>
-        <a rel='noreferrer' target='_blank' href='https://thunderbark.itch.io/space-seekers'>
-          SPACE SEEKERS
-        </a>
-      </h1>
-      <article className={styles.project_container}>
-        <div className={styles.text}>
-          <p>
-            Вы прибываете в свободный от грозовых туч анклав, 
-            где можете видеть драгоценные Нуль-энтропийные кристаллы, 
-            или, как их все называют, Кристаллы Пространства.
-          </p>
-          <p>
-            Ваша миссия состоит в том, чтобы победить своего противника 
-            в этом анклаве и установить монополию. Ваш корабль можно 
-            отремонтировать на вырученные средства, но инвесторы не 
-            собираются терпеть убытки, и ваша миссия будет завершена.
-          </p>
-          <p>
-            Хорошая новость в том, что ваш противник такой же контрабандист, 
-            как и вы, поэтому, если вы сделаете его миссию невыгодной, 
-            ваша миссия будет успешной!
-          </p>
-        </div>
-        <video controls className={styles.video}>
-          <source src="/space_seekers_gameplay.mp4" type="video/mp4" />
-          Sorry, your browser doesn't support videos.
-        </video>
-      </article>
 
-      <h1 className={styles.header}>
-        <a href='../apod'>
-          NASA APOD
-        </a>
-      </h1>
-      <article className={styles.project_container}>
-        <div className={styles.text + ' ' + styles.text_full}>
-          <p>
-            Сайтик, в котором вы можете посмотреть картиночки и видосы,
-            которые подбирают каждый день сами NASA.
-          </p>  
-          <p>
-            Сайт позволяет 
-            посмотреть текущий и предыдущие посты вплоть до начала этой
-            программы NASA в 1996 году. 
-          </p>
-          <p>
-            Также есть старая версия данного сайта с хостом на github pages:&nbsp;
-            <a target="_blank" rel="noopener noreferrer" href='https://thunderbark.github.io/good-nasa-apod/'>
-              https://thunderbark.github.io/good-nasa-apod/
-            </a>
-          </p>
-        </div>
-      </article>
+      <div className={styles.project_container + ' ' + styles.glass}>
+        <h1 className={styles.header}>
+          <a rel='noreferrer' target='_blank' href='https://thunderbark.itch.io/space-seekers'>
+            SPACE SEEKERS
+          </a>
+        </h1>
+        <article className={styles.project_description}>
+          <div className={styles.text}>
+            <p>
+              Вы прибываете в свободный от грозовых туч анклав, 
+              где можете видеть драгоценные Нуль-энтропийные кристаллы, 
+              или, как их все называют, Кристаллы Пространства.
+            </p>
+            <p>
+              Ваша миссия состоит в том, чтобы победить своего противника 
+              в этом анклаве и установить монополию. Ваш корабль можно 
+              отремонтировать на вырученные средства, но инвесторы не 
+              собираются терпеть убытки, и ваша миссия будет завершена.
+            </p>
+            <p>
+              Хорошая новость в том, что ваш противник такой же контрабандист, 
+              как и вы, поэтому, если вы сделаете его миссию невыгодной, 
+              ваша миссия будет успешной!
+            </p>
+          </div>
+          <video controls className={styles.video}>
+            <source src="/space_seekers_gameplay.mp4" type="video/mp4" />
+            Sorry, your browser doesn't support videos.
+          </video>
+        </article>
+      </div>
+
+      <div className={styles.project_container + ' ' + styles.glass}>
+        <h1 className={styles.header}>
+          <a href='../apod'>
+            NASA APOD
+          </a>
+        </h1>
+        <article className={styles.project_description}>
+          <div className={styles.text + ' ' + styles.text_full}>
+            <p>
+              Сайтик, в котором вы можете посмотреть картиночки и видосы,
+              которые подбирают каждый день сами NASA.
+            </p>  
+            <p>
+              Сайт позволяет 
+              посмотреть текущий и предыдущие посты вплоть до начала этой
+              программы NASA в 1996 году. 
+            </p>
+            <p>
+              Также есть старая версия данного сайта с хостом на github pages:&nbsp;
+              <a target="_blank" rel="noopener noreferrer" href='https://thunderbark.github.io/good-nasa-apod/'>
+                https://thunderbark.github.io/good-nasa-apod/
+              </a>
+            </p>
+          </div>
+        </article>
+      </div>
     </main>
   )
 }
