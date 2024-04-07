@@ -159,8 +159,7 @@ export function Apod() {
       {!isShowingStars && selectedApod?.media_type === "video" && (
         <div className={styles.videoWrapper}>
           <iframe
-            width="100%"
-            height="100%"
+            className={styles.video}
             src={selectedApod.url}
             allowFullScreen
             title={selectedApod.title}
