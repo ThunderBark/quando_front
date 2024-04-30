@@ -28,39 +28,44 @@
 }
 
 .content {
-  transition: 0.5s ease;
   height: 100%;
   width: 100%;
   color: var(--neutral100);
+
   position: absolute;
+
   opacity: 1;
-  top: 0;
+  transition: opacity 0.5s ease;
 }
 
 .content:hover {
-  top: 10px;
   opacity: 0;
 }
 
 .description {
   position: absolute;
   left: 0;
-  bottom: 20px;
-  width: calc(100% - 40px);
-  text-align: left;
+  bottom: 10px;
+
+  width: calc(100% - 20px);
+  
   padding: 10px;
   margin: 0 10px;
+
+  text-align: left;
   background-color: hsla(0, 0%, 0%, 0.5);
 }
 
 .title {
   position: absolute;
   right: 0;
+
   width: fit-content;
   max-width: 100%;
-  text-align: right;
   padding: 10px;
   margin: 10px;
+
+  text-align: right;
   background-color: hsla(0, 0%, 0%, 0.5);
 }
 

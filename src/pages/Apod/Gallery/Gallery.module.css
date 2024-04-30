@@ -9,7 +9,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  margin: 0 10px;
+  margin: 10px;
   gap: 5px;
 
   transition: 0.5s;
@@ -41,7 +41,8 @@
 
 .hr {
   display: block;
-  margin: 5px auto;
+  margin-inline: auto;
+  margin-block: 10px;
   width: 80%;
   color: var(--neutral50);
 }
@@ -78,6 +79,7 @@
 
 .selection {
   width: 100%;
+  margin-block: 10px;
 }
 
 .select {
@@ -95,7 +97,7 @@
   scrollbar-color: var(--neutral50) var(--neutral100);
   scrollbar-width: thin;
 
-  margin: 10px 5px;
+  margin-inline: 5px;
   transition: 0.5s ease-out;
   opacity: 1;
   cursor:pointer;
