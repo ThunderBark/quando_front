@@ -44,11 +44,10 @@ export const Showcase = (props: {
   useEffect(() => {
     clearTimeout(fade_timer);
 
-    imageLoaded()
-  
     containerRef.current?.classList.remove(styles.visible);
     setTimer(setTimeout(() => {
       setApod(props.apod);
+      imageLoaded()
       containerRef.current?.classList.add(styles.visible);
     }, 300));
 
