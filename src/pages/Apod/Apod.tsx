@@ -146,7 +146,6 @@ export function Apod() {
   }, []);
 
 
-  // XXX: Сделать элемент "умной" картинки, которая фиксит ивент загрузки изображения
   return (
     <div className={styles.wrapper}>
       <StarsBackground/>
@@ -176,9 +175,6 @@ export function Apod() {
           </div>
         </div>
       )}
-      {!isShowingStars && 
-        <hr className={styles.hr} />
-      }
 
       {!isShowingStars && 
         <Gallery

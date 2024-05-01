@@ -93,12 +93,15 @@ export const Showcase = (props: {
       >
         <div
           className={styles.content}
-          style={{
-            width: imgCalculatedSize.x + 'px',
-            height: imgCalculatedSize.y + 'px',
-            left: String(imgCenter.x + 10) + 'px',
-            top: String(imgCenter.y + 10) + 'px',
-          }}
+          style={
+            window.matchMedia("(min-width: 800px)").matches
+            ? {
+              width: imgCalculatedSize.x + 'px',
+              height: imgCalculatedSize.y + 'px',
+              left: String(imgCenter.x + 10) + 'px',
+              top: String(imgCenter.y + 10) + 'px',
+            }
+            : undefined}
         >
           <div className={styles.title}>
             <h2>{apod.title}</h2>
