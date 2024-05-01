@@ -95,6 +95,9 @@ export function Gallery(props: {
 
   return (
     <div className={styles.gallery}>
+
+      <hr className={styles.hr} />
+
       <div className={styles.selection}>
         <select
           className={styles.select}
