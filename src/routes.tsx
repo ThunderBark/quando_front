@@ -13,13 +13,13 @@ const routes: Array<{
 }> = [
   {
     title: 'ОБО МНЕ',
-    basepath: '/profile/',
+    basepath: '/quando_front/profile/',
     element: <Profile/>,
     params: []
   },
   {
     title: 'APOD',
-    basepath: '/apod/',
+    basepath: '/quando_front/apod/',
     params: [
       ":date?"
     ],

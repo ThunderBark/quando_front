@@ -53,7 +53,7 @@ export const App = createBrowserRouter([{
       path: '*',
       element: <UnhandledPath/>,
       loader: (args) => {
-        if (location.pathname === '/') {
+        if (location.pathname === '/quando_front/') {
           return redirect(routes[0].basepath);
         }
         return 0;
